@@ -2,17 +2,15 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 from flaskext.mysql import MySQL
 import pymysql.cursors
 import bcrypt
-
+import os
 #######################MySQL###################################
 app = Flask(__name__)
 app.secret_key = "secret_key"
 
 mysql = MySQL()
 
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = '1234'
-app.config['MYSQL_DATABASE_DB'] = 'online'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dev-key')
+app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 mysql.init_app(app)
 #######################products################################
 @app.route('/')
