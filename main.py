@@ -3,18 +3,27 @@ from flaskext.mysql import MySQL
 import pymysql.cursors
 import bcrypt
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 #######################MySQL###################################
 app = Flask(__name__)
-app.secret_key = "secret_key"
+app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dev-key')
 
 mysql = MySQL()
 
-app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dev-key')
+app.config['MYSQL_DATABASE_USER'] = os.getenv('MYSQL_USER', 'root')
 app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
+app.config['MYSQL_DATABASE_DB'] = os.getenv('MYSQL_DB', 'online')
+app.config['MYSQL_DATABASE_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
+
 mysql.init_app(app)
 #######################products################################
 @app.route('/')
 def products():
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -23,13 +32,18 @@ def products():
 		return render_template('products.html', products=rows)
 	except Exception as e:
 		print(e)
+		return 'Error loading products', 500
 	finally:
-		cursor.close() 
-		conn.close()
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
  
 #################################################################
 @app.route('/alldetail/<id>')
 def alldetail(id):
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -38,13 +52,18 @@ def alldetail(id):
 		return render_template('alldetail.html', products=rows)
 	except Exception as e:
 		print(e)
+		return 'Error loading product details', 500
 	finally:
-		cursor.close() 
-		conn.close()
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 #################################################################
 
 @app.route('/desktop')
 def desktop():
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -53,12 +72,17 @@ def desktop():
 		return render_template('desktop.html', products=rows)
 	except Exception as e:
 		print(e)
+		return 'Error loading desktop products', 500
 	finally:
-		cursor.close() 
-		conn.close()
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 
 @app.route('/laptop')
 def Laptop():
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -67,12 +91,17 @@ def Laptop():
 		return render_template('laptop.html', products=rows)
 	except Exception as e:
 		print(e)
+		return 'Error loading laptop products', 500
 	finally:
-		cursor.close() 
-		conn.close()
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 
 @app.route('/cellphone')
 def cellphone():
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -81,13 +110,18 @@ def cellphone():
 		return render_template('cellphone.html', products=rows)
 	except Exception as e:
 		print(e)
+		return 'Error loading cellphone products', 500
 	finally:
-		cursor.close() 
-		conn.close()
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 #########################info#########################
 #pcdetail
 @app.route('/pcdetail/<id>')
 def pcdetail(id):
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -97,13 +131,18 @@ def pcdetail(id):
 
 	except Exception as e:
 		print(e)
+		return 'Error loading PC details', 500
 	finally:
-		cursor.close() 
-		conn.close()	
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 		
 #laptopdetail
 @app.route('/laptopdetail/<id>')
 def laptopdetail(id):
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -112,13 +151,18 @@ def laptopdetail(id):
 		return render_template('laptopdetail.html', products=rows)
 	except Exception as e:
 		print(e)
+		return 'Error loading laptop details', 500
 	finally:
-		cursor.close() 
-		conn.close()	
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 
  #cellphonedetail
 @app.route('/cellphonedetail/<id>')
 def cellphonedetail(id):
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -127,9 +171,12 @@ def cellphonedetail(id):
 		return render_template('cellphonedetail.html', products=rows)
 	except Exception as e:
 		print(e)
+		return 'Error loading cellphone details', 500
 	finally:
-		cursor.close() 
-		conn.close()	  
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 
 #######################shopping cart#########################
 #shopping cart
@@ -175,6 +222,7 @@ def delete_product(code):
 @app.route('/add', methods=['POST'])
 def add_product_to_cart():
 	cursor = None
+	conn = None
 	try:
 		_quantity = int(request.form['quantity'])
 		_code = request.form['code']
@@ -221,9 +269,12 @@ def add_product_to_cart():
 			return 'Error while adding item to cart'
 	except Exception as e:
 		print(e)
+		return 'Error adding item to cart', 500
 	finally:
-		cursor.close() 
-		conn.close()
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 
 ####################################calculate###################################	
 def array_merge( first_array , second_array ):
@@ -238,6 +289,8 @@ def array_merge( first_array , second_array ):
 #######################Search#########################
 @app.route('/result', methods=['POST'])
 def result():
+	cursor = None
+	conn = None
 	try:
 		conn = mysql.connect()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
@@ -247,9 +300,12 @@ def result():
 		return render_template('result.html', results=data)
 	except Exception as e:
 		print(e)
+		return 'Error searching products', 500
 	finally:
-		cursor.close() 
-		conn.close()	
+		if cursor:
+			cursor.close()
+		if conn:
+			conn.close()
 
 #######################Login and Logout#########################
 @app.route('/login',methods=["GET","POST"])
