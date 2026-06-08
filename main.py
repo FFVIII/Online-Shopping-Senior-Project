@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-from flaskext.mysql import MySQL
+import pymysql
 import pymysql.cursors
 import bcrypt
 import os
@@ -11,21 +11,22 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv('FLASK_SECRET_KEY', 'dev-key')
 
-mysql = MySQL()
-
-app.config['MYSQL_DATABASE_USER'] = os.getenv('MYSQL_USER', 'root')
-app.config['MYSQL_DATABASE_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
-app.config['MYSQL_DATABASE_DB'] = os.getenv('MYSQL_DB', 'online')
-app.config['MYSQL_DATABASE_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
-
-mysql.init_app(app)
+def get_db_connection():
+	"""Create and return a database connection"""
+	return pymysql.connect(
+		host=os.getenv('MYSQL_HOST', 'localhost'),
+		user=os.getenv('MYSQL_USER', 'root'),
+		password=os.getenv('MYSQL_PASSWORD'),
+		database=os.getenv('MYSQL_DB', 'online'),
+		cursorclass=pymysql.cursors.DictCursor
+	)
 #######################products################################
 @app.route('/')
 def products():
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product")
 		rows = cursor.fetchall()
@@ -45,7 +46,7 @@ def alldetail(id):
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product where id="+id)
 		rows = cursor.fetchall()
@@ -65,7 +66,7 @@ def desktop():
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product where id <= 8")
 		rows = cursor.fetchall()  		
@@ -84,7 +85,7 @@ def Laptop():
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product where id >= 9 and id <= 16")
 		rows = cursor.fetchall()
@@ -103,7 +104,7 @@ def cellphone():
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product where id >= 17 and id <= 24")
 		rows = cursor.fetchall()
@@ -123,7 +124,7 @@ def pcdetail(id):
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product where id =" + id)
 		rows = cursor.fetchall()
@@ -144,7 +145,7 @@ def laptopdetail(id):
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product where id =" + id)
 		rows = cursor.fetchall()
@@ -164,7 +165,7 @@ def cellphonedetail(id):
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("SELECT * FROM product where id =" + id)
 		rows = cursor.fetchall()
@@ -228,7 +229,7 @@ def add_product_to_cart():
 		_code = request.form['code']
 	
 		if _quantity and _code and request.method == 'POST':
-			conn = mysql.connect()
+			conn = get_db_connection()
 			cursor = conn.cursor(pymysql.cursors.DictCursor)
 			cursor.execute("SELECT * FROM product WHERE code=%s", _code)
 			row = cursor.fetchone()
@@ -292,7 +293,7 @@ def result():
 	cursor = None
 	conn = None
 	try:
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		name = request.form.get('search_text')
 		cursor.execute("SELECT * FROM `product` WHERE `name` Like '%"+name+"%'")
@@ -314,7 +315,7 @@ def login():
         email = request.form['email']
         password = request.form['password'].encode('utf-8')
 
-        conn = mysql.connect()
+        conn = get_db_connection()
         cursor = conn.cursor(pymysql.cursors.DictCursor)
         cursor.execute("SELECT * FROM users WHERE email=%s",(email,))
         user = cursor.fetchone()
@@ -347,7 +348,7 @@ def register():
 		password = request.form['password'].encode('utf-8')
 		hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
 
-		conn = mysql.connect()
+		conn = get_db_connection()
 		cursor = conn.cursor(pymysql.cursors.DictCursor)
 		cursor.execute("INSERT INTO users (name, email, password) VALUES (%s,%s,%s)",(name,email,hash_password,))
 		conn.commit()

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Shopping Cart Application
 
 A Python Flask-based e-commerce shopping cart application with user authentication and product management.
@@ -238,3 +239,6 @@ Senior Project - Shopping Cart Application
 **Last Updated:** 2026-06-07  
 **Python Version:** 3.7+  
 **Flask Version:** Compatible with 2.0+
+=======
+Type Python.main.py to run the code.
+>>>>>>> 3a89b20d6146f8eed3ef24287261c822c2a9a9ba

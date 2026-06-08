@@ -1,0 +1,14 @@
+[project]
+name = "shopping-app"
+version = "0.1.0"
+description = "Senior Project Shopping Application"
+requires-python = ">=3.10"
+dependencies = [
+    "Flask==3.0.0",
+    "PyMySQL==1.1.0",
+    "bcrypt==4.1.2",
+    "python-dotenv==1.2.2",
+]
+
+[tool.uv]
+managed = true
