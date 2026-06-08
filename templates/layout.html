@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>{% block title %} layout {% endblock %}</title>
+		<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+		<link rel="shortcut icon" href="{{url_for('static', filename='images/product-images/logo.png')}}">
+	</head>
+
+	<body>
+		<header>
+			<!-- head start -->
+			<div class="header">
+				<!-- logo start -->
+				<div class="logo">
+					<a href="/">
+						<img src="../static/images/product-images/logo.png">
+						<i>Shopping</i>
+					</a>
+				</div>
+				<!-- logo end -->
+
+				<!-- search start -->
+				<div class="search">
+					<form action="/result" method="post">
+						<input type="search" name="search_text" class="search_text" aria-label="Search">					
+					</form>
+				</div>
+				<!-- search end -->
+
+				<!-- userarea start -->
+				<div class="userarea">
+					<div class="user_r">
+						<div class="icon">
+							<i class="fa fa-user-o" aria-hidden="true"></i>
+						</div>
+
+						<div class="box_r">
+							{% if session['name'] %}
+							<span>
+								Welcome<br>
+								{{session['name']}}
+							</span>
+
+							<a href="/logout"><b>Logout</b></a>
+
+							{% else %}						
+							<span>Hello, Sign in</span>
+							<a href="/login"><b>My Account</b></a>							
+							{% endif %}
+						</div>
+					</div>
+
+					<div class="user_l">
+						<div class="icon">
+							<i class="fa fa-shopping-cart" aria-hidden="true"></i>
+						</div>
+
+						<div class="box_l">
+							<a href="/cart">
+								<b>My Cart({{session['cart_item']|length}})</b>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- search tag start -->
+			<div class="search_tag">
+				<div class="search_text">
+					<ul>
+						<li><a href="/desktop"><b>Desktop</b></a></li>
+						<li><a href="/laptop"><b>Laptop</b></a></li>
+						<li><a href="/cellphone"><b>Cellphone</b></a></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- search tag end -->	
+		</header>
+			<!-- head end -->
+		
+		<main>
+				{% block content %} {% endblock %}
+		</main>
+
+		<!-- arrow-up -->
+			<div id = "gotop">
+				<img src="../static/images/product-images/gotop.png">
+			</div>	
+
+		<script>
+			window.addEventListener("scroll", handle)
+
+			function handle()
+			{
+				var oTop = document.body.scrollTop||document.documentElement.scrollTop;
+				
+				if(oTop>=200){
+					gotop.style.display = "block";
+				}
+				else{
+					gotop.style.display = "none";
+				}
+
+				gotop.onclick = function(){
+					window.scrollTo({
+						top: 0,
+						behavior: "smooth"
+					})
+				}
+			}
+		</script>
+	</body>
+</html>

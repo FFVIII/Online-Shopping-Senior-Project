@@ -1,0 +1,91 @@
+{% extends 'layout.html' %}
+{% block title %} Pcdetail {% endblock %}
+
+{% block content %}
+<html>
+	<head>
+		<link rel="stylesheet" href="{{url_for('static', filename='/css/detail.css')}}">
+	</head>
+		<body>
+			<div class="container">	
+				{% for product in products %}
+				<a href="/"><h4>Home >></h4></a> 
+				<a href="/desktop"><h4>Desktop</h4></a> 
+					<form method="post" action="/add">
+						<div class="row">
+								<div class="img">
+									<img src="../static/images/product-images/{{ product.image }}">
+								</div>
+								
+								<div class="info">
+									<h1>{{ product.name }}</h1>
+									<h2>${{ product.price }}</h2>
+									<p style="font-size: 12px; text-decoration: line-through;">$2500</p>
+									<b><i style="font-size: 10px; color: blue;">FREE SHIPPING</i></b>
+									
+									<div class="cart-action">
+										<input type="hidden" name="code" value="{{ product.code }}"/>
+										<input type="text" class="product-quantity" name="quantity" value="1" size="2" />
+										<input type="submit" class="nbtn" name="Add to Cart" value="Add to Cart">
+									</div>
+									<h2>Product Details</h2>
+									<div class="describe">
+										<h4>Sold and shipped by: <b>Dennis' company (100% Positive)</b></h4>
+										
+										<ul>
+											<li>&nbsp NVIDIA GeForce RTX 3080 Laptop GPU 8 GB GDDR6</li>
+											<li>&nbsp Boost Clock 1245 MHz & Max Graphics Power of 105W</li>
+											<li>&nbsp NVIDIA DLSS for groundbreaking AI rendering</li>
+											<li>&nbsp 11th Gen Intel Core i9-11980HK (2.6 GHz - 5.0 GHz)</li>
+											<li>&nbsp Windforce Infinity Next-gen Cooling for Laptop</li>
+											<li>&nbsp 15.60 (W) x 10.60 (D) x 0.85 (H) inch, 99Wh Battery, 5.50 lbs</li>
+										</ul>
+									</div>
+								</div>
+						</div>
+					</form>	
+				{% endfor %}
+			</div>
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="footerArea">
+			<div class="Area">
+				<h4>CUSTOMER SERVICE</h4>
+				<a href="#">888-888-8888</a>
+				<a href="#">Help Center</a>
+				<a href="#">Track an Order</a>
+				<a href="#">Return an Item</a>
+				<a href="#">Return Policy</a>
+			</div>
+
+			<div class="Area">
+				<h4>MY ACCOUNT</h4>
+				<a href="/login">Login/Register</a>
+				<a href="/cart">Shopping Cart</a>
+				<a href="#">Order History</a>
+				
+			</div>
+
+			<div class="Area">
+				<h4>TOOLS & RESOURCES</h4>
+				<a href="#">About shopping</a>
+				<a href="#">Help Center</a>
+				<a href="#">Track an Order</a>
+				
+			</div>
+
+			<div class="Area">
+				<h4>SHOP OUR BRANDS</h4>
+				<a href="#">Business</a>
+				<a href="#">Global</a>
+				<a href="#">Site Map</a>
+			</div>
+		</div>
+		<p class="text">
+			© 2020-2021 Shopping Inc.  All rights reserved.Terms & ConditionsPrivacy Policy
+		</p>
+	</div>	
+		</body>
+</html>
+{% endblock %}

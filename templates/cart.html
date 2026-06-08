@@ -1,0 +1,126 @@
+{% extends 'layout.html' %}
+{% block title %} Cart {% endblock %}
+{% block content %}
+	<html>
+		<head>
+			<link rel="stylesheet" href="{{url_for('static', filename='css/cart.css')}}">
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+			
+			
+		</head>
+
+		<body>
+			<div class="container">			
+				<!-- Shopping cart -->
+				{% if 'cart_item' in session %}
+					{% for key, val in session['cart_item'].items() %}
+						{% set quantity = session['cart_item'][key]['quantity'] %}
+						{% set price = session['cart_item'][key]['price'] %}
+						{% set item_price = session['cart_item'][key]['total_price'] %}
+							<div class="checkbox">
+								<div class="product_check">
+									<a href="#"> 
+										<img class="media-object" 
+										src="/static/images/product-images/{{ session['cart_item'][key]['image'] }}";> 
+									</a>
+
+									<div class="media-name">
+										<a href="#">
+											{{ session['cart_item'][key]['name'] }}
+										</a>
+									</div>	
+									
+									<div class="media-price">
+										<a href="#">
+											${{ session['cart_item'][key]['price'] }}
+										</a><br>
+										<p style="font-size: 12px; text-decoration: line-through;">$2500</p>
+										<b><i style="font-size: 10px; color: blue;">FREE SHIPPING</i></b>
+									</div>
+									
+									<div class="media-quantity">
+										<p>Quantity</p>
+										<br>
+										<input type="email" class="quantity" value="{{ quantity }}">
+										
+										<a href="{{ url_for('.delete_product', code=session['cart_item'][key]['code']) }}">
+											<br>
+											<br>
+											Remove 
+										</a>
+									</div>
+								</div>
+							</div>		
+					{% endfor %}
+							<div class="total-quantity">
+								<h2>Total Quantity</h2>
+								<h3><strong>{{ session['all_total_quantity'] }}</strong></h3>
+							</div>
+							
+							<div class="total-price">
+								<h2>Total</h2>
+								<h1>$ {{ session['all_total_price'] }}</h1>
+
+								<button type="button" class="cbtn">
+									<a href="/pay">Checkout</a>
+								</button>
+							</div>
+
+							<div class="checkout">
+								<a href="/">Continue Shopping</a>
+
+								
+							</div>
+						{% else: %}
+							<div class="no-records">Oh...seems like the cart is empty...</div>
+
+							<div class="pic">
+								<a href="/">
+									<img src="static/images/product-images/empty.png">
+								</a>
+							</div>							
+						{% endif %}
+			</div>
+		
+		<!-- footer -->
+		<div class="footer">
+			<div class="footerArea">
+				<div class="Area">
+					<h4>CUSTOMER SERVICE</h4>
+					<a href="#">888-888-8888</a>
+					<a href="#">Help Center</a>
+					<a href="#">Track an Order</a>
+					<a href="#">Return an Item</a>
+					<a href="#">Return Policy</a>
+				</div>
+
+				<div class="Area">
+					<h4>MY ACCOUNT</h4>
+					<a href="/login">Login/Register</a>
+					<a href="/cart">Shopping Cart</a>
+					<a href="#">Order History</a>
+					
+				</div>
+
+				<div class="Area">
+					<h4>TOOLS & RESOURCES</h4>
+					<a href="#">About shopping</a>
+					<a href="#">Help Center</a>
+					<a href="#">Track an Order</a>
+					
+				</div>
+
+				<div class="Area">
+					<h4>SHOP OUR BRANDS</h4>
+					<a href="#">Business</a>
+					<a href="#">Global</a>
+					<a href="#">Site Map</a>
+				</div>
+			</div>
+			<p class="text">
+				© 2020-2021 Shopping Inc.  All rights reserved.Terms & ConditionsPrivacy Policy
+			</p>
+		</div>		
+	</body>
+</html>
+{% endblock %}

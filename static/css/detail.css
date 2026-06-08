@@ -1,0 +1,48 @@
+.container{
+	width: 1200px;
+	height: 650px;
+	margin: 0 auto;
+}
+
+.row{
+	margin-top: 50px;
+	width: 1150px;
+	height: 416px;
+	position: relative;
+}
+
+.info{
+	width: 320px;
+	height: 300px;
+	line-height: 2;
+	float: left;
+	position: absolute;
+	left: 380px;
+	top: 0;
+	float: left;	
+}
+
+.describe{
+	width: 820px;
+	height: 300px;
+	line-height: 2;
+	margin-top: 10px;
+}
+
+.describe li{
+	list-style-type: circle;
+}
+
+a{
+	display: inline-block;
+	color: black;
+}
+a:hover{
+	color: #fe696a;
+}
+
+.footerd{
+	width: 100%;
+	height: 260px;
+	background-color: #ff523b;
+}

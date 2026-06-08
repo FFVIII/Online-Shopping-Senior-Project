@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% block title %} Login {% endblock %}
+{% block content %}
+<head>
+	<link rel="stylesheet" href="{{url_for('static', filename='css/login.css')}}">
+</head>
+
+<body>
+	<div class="container">
+		<div class="box">
+			<form action="/login" method="POST">
+				<h1>Login</h1>
+				<input type="email" name="email" placeholder="Email">
+				<input type="password" name="password"  placeholder="Password">
+				<input type="submit" name="" value="Log In">
+				<p>New to Shop? <a href="/register">Sign Up</a></p>
+			</form>
+		</div>
+	</div>
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="footerArea">
+			<div class="Area">
+				<h4>CUSTOMER SERVICE</h4>
+				<a href="#">888-888-8888</a>
+				<a href="#">Help Center</a>
+				<a href="#">Track an Order</a>
+				<a href="#">Return an Item</a>
+				<a href="#">Return Policy</a>
+			</div>
+
+			<div class="Area">
+				<h4>MY ACCOUNT</h4>
+				<a href="/login">Login/Register</a>
+				<a href="/cart">Shopping Cart</a>
+				<a href="#">Order History</a>
+				
+			</div>
+
+			<div class="Area">
+				<h4>TOOLS & RESOURCES</h4>
+				<a href="#">About shopping</a>
+				<a href="#">Help Center</a>
+				<a href="#">Track an Order</a>
+				
+			</div>
+
+			<div class="Area">
+				<h4>SHOP OUR BRANDS</h4>
+				<a href="#">Business</a>
+				<a href="#">Global</a>
+				<a href="#">Site Map</a>
+			</div>
+		</div>
+		<p class="text">
+			© 2020-2021 Shopping Inc.  All rights reserved.Terms & ConditionsPrivacy Policy
+		</p>
+	</div>	
+</body>
+
+
+{% endblock %}

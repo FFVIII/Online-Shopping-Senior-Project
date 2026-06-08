@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% block title %} Laptop {% endblock %}
+
+{% block content %}
+<html>
+	<head>
+		<link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+	</head>
+		<body>
+			<div class="container">	
+				{% for product in products %}			
+					<div class="product-item">
+						<form method="post" action="/add">
+							<div class="item">
+								<a href="/laptopdetail/{{ product.id }}" title="{{ product.id }}, {{ product.name }} ,{{ product.image }}">
+									<img src="../static/images/product-images/{{ product.image }}">
+								</a>
+								
+								<h1>{{ product.name }}</h1>
+								<br>
+								<h2>${{ product.price }}</h2>
+
+								<p style="font-size: 12px; text-decoration: line-through;">$2500</p>
+
+								<b><i style="font-size: 10px; color: blue;">FREE SHIPPING</i></b>
+
+								<div class="cart-action">
+									<input type="hidden" name="code" value="{{ product.code }}"/>
+									<input type="text" class="product-quantity" name="quantity" value="1" size="2" />
+									<input type="submit" class="nbtn" name="Add to Cart" value="Add to Cart">
+								</div>											
+							</div>
+						</form>
+					</div>	
+				{% endfor %}
+			</div>
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="footerArea">
+			<div class="Area">
+				<h4>CUSTOMER SERVICE</h4>
+				<a href="#">888-888-8888</a>
+				<a href="#">Help Center</a>
+				<a href="#">Track an Order</a>
+				<a href="#">Return an Item</a>
+				<a href="#">Return Policy</a>
+			</div>
+
+			<div class="Area">
+				<h4>MY ACCOUNT</h4>
+				<a href="/login">Login/Register</a>
+				<a href="/cart">Shopping Cart</a>
+				<a href="#">Order History</a>
+				
+			</div>
+
+			<div class="Area">
+				<h4>TOOLS & RESOURCES</h4>
+				<a href="#">About shopping</a>
+				<a href="#">Help Center</a>
+				<a href="#">Track an Order</a>
+				
+			</div>
+
+			<div class="Area">
+				<h4>SHOP OUR BRANDS</h4>
+				<a href="#">Business</a>
+				<a href="#">Global</a>
+				<a href="#">Site Map</a>
+			</div>
+		</div>
+		<p class="text">
+			© 2020-2021 Shopping Inc.  All rights reserved.Terms & ConditionsPrivacy Policy
+		</p>
+	</div>	
+		</body>
+</html>
+{% endblock %}
