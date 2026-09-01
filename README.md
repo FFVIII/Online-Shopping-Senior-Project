@@ -1,1 +1,1 @@
-Type Python.main.py to run the code.
+uv run python main.py
